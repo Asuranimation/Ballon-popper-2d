@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,17 +7,17 @@ using UnityEngine;
 public class BalloonController : MonoBehaviour
 {
     [SerializeField] float upSpeed;
-    [SerializeField] int score;
-    [SerializeField] TextMeshProUGUI currentScoreText;
-    [SerializeField] TextMeshProUGUI highScoreText;
     AudioSource audioSource;
+    SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite[] spritesBallon;
 
-
+    public static event Action onBallonDoor;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        RandomCollorSprite();
     }
 
     void Update()
@@ -26,15 +27,27 @@ public class BalloonController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        score++;
+        onBallonDoor?.Invoke();
+        RandomCollorSprite();
         audioSource.Play();
+        IncreaseUpSpeed();
         ResetPosition();
     }
 
     void ResetPosition()
     {
-        float randomX = Random.Range(-2.5f, 2.5f);
-
+        float randomX = UnityEngine.Random.Range(-2.5f, 2.5f);
         transform.position = new Vector3(randomX, -7f , transform.position.z);
+    }
+
+    void RandomCollorSprite()
+    {
+        int randomSprite = UnityEngine.Random.Range(0, spritesBallon.Length);
+        spriteRenderer.sprite = spritesBallon[randomSprite];
+    }
+
+    void IncreaseUpSpeed()
+    {
+        upSpeed += 0.05f;
     }
 }
