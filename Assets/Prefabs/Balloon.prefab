@@ -233,5 +233,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39deb96e46787a94d8570406c38f644a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballonType: 0
   upSpeed: 1
-  score: 0
+  spritesBallon:
+  - {fileID: 21300000, guid: 297189871d41cc046b63efa5038e5648, type: 3}
+  - {fileID: 21300000, guid: e250775f6ffc8a545a3998dd9a63c337, type: 3}
+  - {fileID: 21300000, guid: 792f4fea391806e4d8e9d6cce2f42670, type: 3}
+  - {fileID: 21300000, guid: a2ad2b757674b0346b8e2d0099aefb26, type: 3}
+  - {fileID: 21300000, guid: 8c93061cf48b11646b04976ad807193b, type: 3}
+  - {fileID: 21300000, guid: 96563241fa4b7e64c9dbd30a0c2be83b, type: 3}
+  - {fileID: 21300000, guid: 6ea5311c1dfc5e649a52caa92a471a5d, type: 3}
+  - {fileID: 21300000, guid: 18dcda62d9d23cf44b9bbeb951dca54c, type: 3}
+  - {fileID: 21300000, guid: 3eabdd727d20e8a45b4f426ffb698a75, type: 3}

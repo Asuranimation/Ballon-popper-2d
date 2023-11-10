@@ -11,27 +11,45 @@ public class BalloonController : MonoBehaviour
     SpriteRenderer spriteRenderer;
     [SerializeField] Sprite[] spritesBallon;
 
-    public static event Action onBallonDoor;
+    public static event Action OnBalloonPopped;
+    public static event Action OnBalloonReachedMaxHeight;
+    public static event Action OnBombBalloonExploded;
+    public static event Action OnStarBalloonExploded;
 
+    public bool isFreeze;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        RandomCollorSprite();
+        ResetPosition();
+        RandomColorSprite();
     }
 
     void Update()
     {
-        transform.Translate(Vector2.up * upSpeed * Time.deltaTime);
+        balloonFliesUp();
     }
 
     private void OnMouseDown()
     {
-        onBallonDoor?.Invoke();
-        RandomCollorSprite();
+        OnBalloonPopped?.Invoke();
         audioSource.Play();
         IncreaseUpSpeed();
         ResetPosition();
+        RandomColorSprite();
+    }
+
+    void balloonFliesUp()
+    {
+        if (!isFreeze)
+        {
+            transform.Translate(Vector2.up * upSpeed * Time.deltaTime);
+
+            if (transform.position.y > 5.2f)
+            {
+                OnBalloonReachedMaxHeight?.Invoke();
+            }
+        }
     }
 
     void ResetPosition()
@@ -40,9 +58,9 @@ public class BalloonController : MonoBehaviour
         transform.position = new Vector3(randomX, -7f , transform.position.z);
     }
 
-    void RandomCollorSprite()
+    void RandomColorSprite()
     {
-        int randomSprite = UnityEngine.Random.Range(0, spritesBallon.Length);
+        int randomSprite = UnityEngine.Random.Range(0, spritesBallon.Length - 1);
         spriteRenderer.sprite = spritesBallon[randomSprite];
     }
 
