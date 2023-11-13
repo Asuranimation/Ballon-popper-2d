@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] bool isGameOver = false;
 
     [SerializeField] AudioSource bgmSource;
-    float highscore;
+    int highscore;
 
     private void OnEnable()
     {
@@ -39,6 +39,10 @@ public class UIManager : MonoBehaviour
         highScoreText.text = highscore.ToString();
     }
 
+    private void Update()
+    {
+        highScoreText.text = highscore.ToString();
+    }
 
     void ShowTextScore()
     {
@@ -47,6 +51,12 @@ public class UIManager : MonoBehaviour
 
     void ShowGameOver()
     {
+        StartCoroutine(DelayShowGameOverCourotine());
+    }
+
+    IEnumerator DelayShowGameOverCourotine()
+    {
+        yield return new WaitForSeconds(0.5f);
         if (!isGameOver)
         {
             bgmSource.enabled = false;

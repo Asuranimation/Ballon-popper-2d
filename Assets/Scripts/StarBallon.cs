@@ -7,6 +7,7 @@ public class StarBallon : BaseBallon
 {
     public static event Action OnStarBallonPopped;
     float randomResetPosition;
+    [SerializeField] GameObject particleStar;
  
     private void Awake()
     {
@@ -21,19 +22,50 @@ public class StarBallon : BaseBallon
     {
         BalloonFliesUp();
         DestroyBallon();
+        if (Input.touchCount > 0)
+        {
+            for (int i = 0; i < Input.touchCount; i++)
+            {
+                Touch touch = Input.GetTouch(i);
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    if (IsTouched(touch.position))
+                    {
+                        HandleTouchInput();
+                    }
+                }
+            }
+        }
     }
 
- 
-    private void OnMouseDown()
+    private bool IsTouched(Vector2 touchPosition)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.gameObject == gameObject)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    private void HandleTouchInput()
     {
         OnStarBallonPopped?.Invoke();
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z);
+        Instantiate(particleStar, pos, Quaternion.identity);
         audioSource.Play();
         IncreaseUpSpeed();
         randomResetPosition = UnityEngine.Random.Range(-15, -30);
         ResetPosition(randomResetPosition);
     }
-
-
 
     void DestroyBallon()
     {
