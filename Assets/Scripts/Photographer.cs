@@ -14,8 +14,7 @@ public class Photographer : MonoBehaviour
     public Button btnDone;
 
     [SerializeField] GameObject photoCanvas;
-    [SerializeField] BalloonController balloonController;
-
+    [SerializeField] NormalBallon balloonController;
 
 
     private void Awake()

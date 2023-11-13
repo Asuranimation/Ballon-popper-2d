@@ -13,17 +13,23 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject gameOver;
     [SerializeField] AudioClip gameoverclip;
     [SerializeField] bool isGameOver = false;
+
+    [SerializeField] AudioSource bgmSource;
     float highscore;
 
     private void OnEnable()
     {
-        BalloonController.OnBalloonPopped += ShowTextScore;
-        BalloonController.OnBalloonReachedMaxHeight += ShowGameOver;
+        NormalBallon.OnNormalBalloonPopped += ShowTextScore;
+        StarBallon.OnStarBallonPopped += ShowTextScore;
+        BomBallon.OnBomBallonPopped += ShowGameOver;
+        NormalBallon.OnBalloonReachedMaxHeight += ShowGameOver;
     }
     private void OnDisable()
     {
-        BalloonController.OnBalloonPopped += ShowTextScore;
-        BalloonController.OnBalloonReachedMaxHeight -= ShowGameOver;
+        NormalBallon.OnNormalBalloonPopped -= ShowTextScore;
+        StarBallon.OnStarBallonPopped -= ShowTextScore;
+        BomBallon.OnBomBallonPopped -= ShowGameOver;
+        NormalBallon.OnBalloonReachedMaxHeight -= ShowGameOver;
 
     }
 
@@ -43,6 +49,7 @@ public class UIManager : MonoBehaviour
     {
         if (!isGameOver)
         {
+            bgmSource.enabled = false;
             gameOver.SetActive(true);
             canvasGameOverHighscoreText.text = "highscore : \n " + highscore.ToString();
             highScoreText.gameObject.SetActive(false);
