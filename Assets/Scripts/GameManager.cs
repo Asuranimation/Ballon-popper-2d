@@ -11,9 +11,6 @@ public class GameManager : MonoBehaviour
     public TMP_Text comboText;
     [SerializeField] int increaseScoreNormalBallon = 10, increaseScoreStarBallon = 50;
 
-    //[SerializeField] int combo = 0;
-    //[SerializeField] float lastScoreTime;
-
     [SerializeField] GameObject ballonPrefabs;
     [SerializeField] Transform containerBallon;
 
@@ -28,6 +25,7 @@ public class GameManager : MonoBehaviour
         StarBallon.OnStarBallonPopped += delegate { ScoreSystem(increaseScoreStarBallon); };
         NormalBallon.OnNormalBalloonPopped += SpawningBallon;
         NormalBallon.OnBalloonReachedMaxHeight += RestartScene;
+        BomBallon.OnBomBallonPopped += RestartScene;
         NormalBallon.OnBalloonReachedMaxHeight += RemoveAllBallon;
         BomBallon.OnBomBallonPopped += RemoveAllBallon;
     }
@@ -38,9 +36,17 @@ public class GameManager : MonoBehaviour
         StarBallon.OnStarBallonPopped -= delegate { ScoreSystem(increaseScoreStarBallon); };
         NormalBallon.OnNormalBalloonPopped -= SpawningBallon;
         NormalBallon.OnBalloonReachedMaxHeight -= RestartScene;
+        BomBallon.OnBomBallonPopped -= RestartScene;
         NormalBallon.OnBalloonReachedMaxHeight -= RemoveAllBallon;
         BomBallon.OnBomBallonPopped -= RemoveAllBallon;
     }
+
+    private void Start()
+    {
+        highScore = PlayerPrefs.GetInt("highScore", 0);
+    }
+
+
 
     void ScoreSystem(int increaseValueScore)
     {
@@ -48,23 +54,11 @@ public class GameManager : MonoBehaviour
 
         if (currentScore > highScore)
         {
-           // combo++;
             highScore = currentScore;
 
             PlayerPrefs.SetInt("highScore", highScore);
-            PlayerPrefs.Save();
         }
 
-        //lastScoreTime = Time.time;
-
-        //if (combo > 1)
-        //{
-        //    comboText.text = "Combo x" + combo;
-        //}
-        //else
-        //{
-        //    comboText.text = ""; 
-        //}
     }
 
     void RestartScene()
@@ -80,9 +74,10 @@ public class GameManager : MonoBehaviour
 
     void SpawningBallon()
     {
-        if(currentScore % 100 == 0)
+        Vector2 posSpawn = new Vector2 (transform.position.x, -10);
+        if(currentScore % 100 == 0 || currentScore % 70 == 0)
         {
-            Instantiate(ballonPrefabs, transform.position, Quaternion.identity, containerBallon);
+            Instantiate(ballonPrefabs, posSpawn, Quaternion.identity, containerBallon);
         }
     }
 
@@ -96,15 +91,5 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         containerBallon.gameObject.SetActive(false);
     }
-
-
-    //private void Update()
-    //{
-    //    if (Time.time - lastScoreTime > 2.0f)
-    //    {
-    //        combo = 0;
-    //        comboText.text = ""; 
-    //    }
-    //}
 
 }

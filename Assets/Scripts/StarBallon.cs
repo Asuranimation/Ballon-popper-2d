@@ -7,6 +7,7 @@ public class StarBallon : BaseBallon
 {
     public static event Action OnStarBallonPopped;
     float randomResetPosition;
+    [SerializeField] GameObject particleStar;
  
     private void Awake()
     {
@@ -46,17 +47,16 @@ public class StarBallon : BaseBallon
         }
     }
 
-
     private void BallonPopped()
     {
         OnStarBallonPopped?.Invoke();
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z);
+        Instantiate(particleStar, pos, Quaternion.identity);
         audioSource.Play();
         IncreaseUpSpeed();
         randomResetPosition = UnityEngine.Random.Range(-15, -30);
         ResetPosition(randomResetPosition);
     }
-
-
 
     void DestroyBallon()
     {

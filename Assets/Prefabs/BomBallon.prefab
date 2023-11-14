@@ -237,3 +237,4 @@ MonoBehaviour:
   spritesBallon:
   - {fileID: 21300000, guid: 18dcda62d9d23cf44b9bbeb951dca54c, type: 3}
   isFreeze: 0
+  particleBom: {fileID: 4873188563446742113, guid: dfe254317ebf0334e80ca61afc2d248b, type: 3}

@@ -16,7 +16,13 @@ public class BaseBallon : MonoBehaviour
 
     protected void ResetPosition(float yValue)
     {
-        float randomX = UnityEngine.Random.Range(-2.5f, 2.5f);
+        StartCoroutine(DelayResetPosition(yValue));
+    }
+
+    IEnumerator DelayResetPosition(float yValue)
+    {
+        yield return new WaitForSeconds(0.1f);
+        float randomX = UnityEngine.Random.Range(-2f, 2f);
         transform.position = new Vector3(randomX, yValue, transform.position.z);
     }
 

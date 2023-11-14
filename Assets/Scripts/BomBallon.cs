@@ -7,6 +7,7 @@ public class BomBallon : BaseBallon
 {
     public static event Action OnBomBallonPopped;
     float randomResetPosition;
+    [SerializeField] GameObject particleBom;
 
     void Start()
     {
@@ -20,15 +21,15 @@ public class BomBallon : BaseBallon
     {
         BalloonFliesUp();
         DestroyBallon();
-        OnTouchBallon();
 
+        OnTouchBallon();
     }
 
     void OnTouchBallon()
     {
         if (Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0); 
+            Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
                 Vector2 touchPosition = touch.position;
@@ -46,9 +47,12 @@ public class BomBallon : BaseBallon
         }
     }
 
+
     private void BallonPopped()
     {
         OnBomBallonPopped?.Invoke();
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z);
+        Instantiate(particleBom , pos, Quaternion.identity);
         audioSource.Play();
         IncreaseUpSpeed();
         ResetPosition(-10f);
