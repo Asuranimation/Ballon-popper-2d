@@ -57,7 +57,6 @@ public class GameManager : MonoBehaviour
             highScore = currentScore;
 
             PlayerPrefs.SetInt("highScore", highScore);
-            PlayerPrefs.Save();
         }
 
     }

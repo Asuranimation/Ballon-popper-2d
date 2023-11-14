@@ -59,6 +59,7 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (!isGameOver)
         {
+            highscore = PlayerPrefs.GetInt("highScore", 0);
             bgmSource.enabled = false;
             gameOver.SetActive(true);
             canvasGameOverHighscoreText.text = "highscore : \n " + highscore.ToString();

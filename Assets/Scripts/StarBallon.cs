@@ -22,41 +22,32 @@ public class StarBallon : BaseBallon
     {
         BalloonFliesUp();
         DestroyBallon();
+        OnTouchBallon();
+    }
+
+    void OnTouchBallon()
+    {
         if (Input.touchCount > 0)
         {
-            for (int i = 0; i < Input.touchCount; i++)
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
             {
-                Touch touch = Input.GetTouch(i);
+                Vector2 touchPosition = touch.position;
 
-                if (touch.phase == TouchPhase.Began)
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(touchPosition), Vector2.zero);
+
+                if (hit.collider != null)
                 {
-                    if (IsTouched(touch.position))
+                    if (hit.collider.gameObject == gameObject)
                     {
-                        HandleTouchInput();
+                        BallonPopped();
                     }
                 }
             }
         }
     }
 
-    private bool IsTouched(Vector2 touchPosition)
-    {
-        Ray ray = Camera.main.ScreenPointToRay(touchPosition);
-
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (hit.collider.gameObject == gameObject)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    private void HandleTouchInput()
+    private void BallonPopped()
     {
         OnStarBallonPopped?.Invoke();
         Vector3 pos = new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z);
